@@ -1,7 +1,8 @@
 // Vercel serverless function: proxies the terminal chatbot to the Gemini API.
 // The API key stays on the server (env var GEMINI_API_KEY), never in the browser bundle.
 
-const MODELS = ['gemini-2.5-flash-lite'].filter(Boolean)
+// Google limits the 2.5 models to accounts that already used them and 2.0 is shut down, so new keys use 3.x
+const MODELS = ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite', 'gemini-3-flash-preview']
 
 const SYSTEM = `You are the assistant inside the portfolio website of Nguyen Quang Dung (a 2007-born IT student aiming to become an AI engineer).
 Answer questions about Dung ONLY from the facts below. Be friendly, concise (max about 100 words), plain text without markdown.
