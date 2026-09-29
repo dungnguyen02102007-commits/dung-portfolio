@@ -148,6 +148,95 @@ function Ragdoll({ children }) {
   )
 }
 
+// Class photo that drifts around the loading screen; grab it, throw it, let it fly on.
+function FlyingPhoto() {
+  const ref = useRef(null)
+  const s = useRef({ x: 80, y: 140, vx: 190, vy: 130, rot: 0, drag: false, ox: 0, oy: 0, hist: [] })
+
+  useEffect(() => {
+    let raf
+    let last = performance.now()
+    const tick = (t) => {
+      const el = ref.current
+      if (!el) return
+      const p = s.current
+      const dt = Math.min(0.033, (t - last) / 1000)
+      last = t
+      const W = Math.max(0, el.parentElement.clientWidth - el.offsetWidth)
+      const H = Math.max(0, el.parentElement.clientHeight - el.offsetHeight)
+      if (!p.drag) {
+        p.x += p.vx * dt
+        p.y += p.vy * dt
+        if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx) }
+        if (p.x > W) { p.x = W; p.vx = -Math.abs(p.vx) }
+        if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy) }
+        if (p.y > H) { p.y = H; p.vy = -Math.abs(p.vy) }
+        // thrown fast -> slow down to cruising speed; slow -> speed back up so it keeps flying
+        const cruise = 200
+        const sp = Math.hypot(p.vx, p.vy) || 1
+        const next = sp > cruise ? Math.max(cruise, sp - (sp - cruise) * 1.2 * dt) : cruise
+        p.vx *= next / sp
+        p.vy *= next / sp
+      }
+      const target = Math.max(-14, Math.min(14, p.vx * 0.03))
+      p.rot += (target - p.rot) * Math.min(1, dt * 6)
+      el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rot}deg)`
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  const down = (e) => {
+    const r = e.currentTarget.parentElement.getBoundingClientRect()
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const p = s.current
+    p.drag = true
+    p.ox = e.clientX - r.left - p.x
+    p.oy = e.clientY - r.top - p.y
+    p.hist = []
+  }
+  const move = (e) => {
+    const p = s.current
+    if (!p.drag) return
+    const el = ref.current
+    const r = el.parentElement.getBoundingClientRect()
+    const W = Math.max(0, r.width - el.offsetWidth)
+    const H = Math.max(0, r.height - el.offsetHeight)
+    p.x = Math.max(0, Math.min(W, e.clientX - r.left - p.ox))
+    p.y = Math.max(0, Math.min(H, e.clientY - r.top - p.oy))
+    const now = performance.now()
+    p.hist.push({ x: p.x, y: p.y, t: now })
+    while (p.hist.length > 1 && now - p.hist[0].t > 100) p.hist.shift()
+  }
+  const up = () => {
+    const p = s.current
+    p.drag = false
+    const h = p.hist
+    if (h.length > 1) {
+      const dt = Math.max(0.016, (h[h.length - 1].t - h[0].t) / 1000)
+      const clamp = (v) => Math.max(-2600, Math.min(2600, v))
+      p.vx = clamp((h[h.length - 1].x - h[0].x) / dt)
+      p.vy = clamp((h[h.length - 1].y - h[0].y) / dt)
+    }
+  }
+
+  return (
+    <div
+      ref={ref}
+      onPointerDown={down}
+      onPointerMove={move}
+      onPointerUp={up}
+      onPointerCancel={up}
+      style={{ touchAction: 'none' }}
+      className="absolute left-0 top-0 z-20 w-[260px] md:w-[360px] cursor-grab active:cursor-grabbing select-none bg-white border-4 border-black shadow-[8px_8px_0_#000] p-2 will-change-transform"
+    >
+      <img src="/class.jpg" draggable={false} alt="HCMUT x UTS class photo" className="block w-full h-auto border-2 border-black" />
+      <div className="mt-1.5 flex justify-between font-mono font-bold text-[11px]"><span>HCMUT x UTS</span><span>GRAB &amp; THROW</span></div>
+    </div>
+  )
+}
+
 function Intro({ onDone }) {
   const [pct, setPct] = useState(0)
   useEffect(() => {
@@ -161,6 +250,7 @@ function Intro({ onDone }) {
       exit={{ y: '-100%' }}
       transition={{ duration: 1.1, ease: [0.77, 0, 0.18, 1] }}
     >
+      <FlyingPhoto />
       <div className="flex justify-between text-sm"><span>DUNG.SYS / BOOT</span><span>HCMC / 2026</span></div>
       <div className="flex flex-col gap-8">
         <div className="flex items-end gap-4">
