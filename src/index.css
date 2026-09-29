@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@theme {
+  --font-display: 'Archivo Black', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'Space Grotesk', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #F4F4F0; font-family: var(--font-sans); color: #000; }
+@keyframes mq { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.mq { display: flex; width: max-content; animation: mq 30s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .mq { animation: none } }
+button, a { cursor: pointer }
+:focus-visible { outline: 4px solid #A855F7; outline-offset: 2px }
