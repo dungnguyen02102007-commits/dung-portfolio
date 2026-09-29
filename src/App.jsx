@@ -293,7 +293,9 @@ export default function App() {
   const [intro, setIntro] = useState(true)
   const [filter, setFilter] = useState('ALL')
   const [cmd, setCmd] = useState('')
-  const [lines, setLines] = useState([{ t: 'DUNG.SYS v1.0 // type "help" for commands', k: 'dim' }])
+  const [lines, setLines] = useState([
+    { t: 'Hey, you made it! I'm Jarvis. Wanna know more about Dung, or just chat with me? Ask away, or type "help" for commands.', k: 'out' },
+  ])
   const [toast, setToast] = useState(false)
   const busy = useRef(false)
   const history = useRef([])
@@ -490,7 +492,7 @@ export default function App() {
         <section className="grid lg:grid-cols-5 gap-10 px-6 md:px-16 py-24">
           <div className="lg:col-span-2 flex flex-col gap-5">
             <Tag>05 // COMMAND CENTER</Tag>
-            <H2 className="!text-5xl md:!text-6xl">TALK TO THE TERMINAL</H2>
+            <H2 className="!text-5xl md:!text-6xl">TALK TO THE TERMINAL <span className="inline-block bg-[#FF5E97] border-4 border-black shadow-[6px_6px_0_#000] px-3 -rotate-3">AI</span></H2>
             <p className="m-0 text-lg">Type a command or hit a quick action. Try <b>help</b>.</p>
             <div className="flex flex-wrap gap-2.5">
               {quick.map(([c, bg]) => (
