@@ -299,6 +299,13 @@ export default function App() {
   const [toast, setToast] = useState(false)
   const busy = useRef(false)
   const history = useRef([])
+  const termRef = useRef(null)
+
+  // keep the terminal scrolled to the newest text while it is being typed
+  useEffect(() => {
+    const el = termRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [lines])
 
   useEffect(() => {
     document.body.style.overflow = intro ? 'hidden' : ''
@@ -306,7 +313,7 @@ export default function App() {
 
   const run = (raw) => {
     const c = raw.trim().toLowerCase()
-    if (!c) return
+    if (!c || busy.current) return
     if (c === 'clear') { setLines([]); setCmd(''); return }
     if (!commands[c]) { ask(raw.trim().slice(0, 300)); return }
     if (c === 'download-cv') downloadCv()
@@ -318,7 +325,7 @@ export default function App() {
     if (busy.current) return
     busy.current = true
     setCmd('')
-    setLines((l) => [...l, { t: '$ ' + question, k: 'in' }, { t: 'thinking...', k: 'dim' }])
+    setLines((l) => [...l, { t: '$ ' + question, k: 'in' }, { t: '', k: 'think' }])
     let reply
     try {
       const r = await fetch('/api/chat', {
@@ -332,12 +339,17 @@ export default function App() {
     } catch {
       reply = 'Chatbot is offline. Try: help, about, skills, contact.'
     }
+    // type the reply out char by char, with small pauses on punctuation
     let i = 0
-    const id = setInterval(() => {
-      i += 3
+    const step = () => {
+      i += 1
       setLines((l) => { const n = [...l]; n[n.length - 1] = { t: reply.slice(0, i), k: 'out' }; return n })
-      if (i >= reply.length) { clearInterval(id); busy.current = false }
-    }, 16)
+      if (i >= reply.length) { busy.current = false; return }
+      const ch = reply[i - 1]
+      const delay = /[.!?]/.test(ch) ? 170 : /[,;:]/.test(ch) ? 90 : 16 + Math.random() * 22
+      setTimeout(step, delay)
+    }
+    step()
   }
   const send = (e) => {
     e.preventDefault()
@@ -505,8 +517,19 @@ export default function App() {
               <span className="w-3.5 h-3.5 bg-[#FF5E97] border-[3px] border-black" /><span className="w-3.5 h-3.5 bg-[#FFE600] border-[3px] border-black" /><span className="w-3.5 h-3.5 bg-white border-[3px] border-black" />
               <span className="ml-2">dung@portfolio:~</span>
             </div>
-            <div className="grow overflow-auto p-4 font-mono text-[15px] leading-relaxed flex flex-col">
-              {lines.map((l, i) => <div key={i} className={`${lineCls[l.k]} whitespace-pre-wrap break-words`}>{l.t}</div>)}
+            <div ref={termRef} className="grow overflow-auto p-4 font-mono text-[15px] leading-relaxed flex flex-col">
+              {lines.map((l, i) =>
+                l.k === 'think' ? (
+                  <div key={i} className="text-neutral-400 flex items-end">
+                    thinking
+                    {[0, 1, 2].map((d) => (
+                      <motion.span key={d} className="inline-block" animate={{ y: [0, -7, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: d * 0.15, ease: 'easeInOut' }}>.</motion.span>
+                    ))}
+                  </div>
+                ) : (
+                  <div key={i} className={`${lineCls[l.k]} whitespace-pre-wrap break-words`}>{l.t}</div>
+                ),
+              )}
             </div>
             <form className="flex border-t-4 border-[#22C55E]" onSubmit={(e) => { e.preventDefault(); run(cmd) }}>
               <span className="pl-4 py-3 font-mono font-bold text-[15px] text-[#22C55E]">$</span>
