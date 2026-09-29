@@ -15,7 +15,8 @@ const stats = [
 const projects = [
   { n: '01', bg: 'bg-[#FF5E97]', tag: 'MULTI-AGENT / RAG', title: 'AMASE: Multi-Agent AI System for CV Evaluation', stack: 'Python / LangChain / Claude & Gemini APIs / ChromaDB / SQLite', desc: 'Automated 3-step CV evaluation pipeline: Gemini CV parser, Claude ATS rewriter, Claude hiring probability estimator. Features a ChromaDB RAG reference library and real-time job scraping from LinkedIn/Seek.', href: `${GH}/AMASE-AI`, cta: 'VIEW ON GITHUB', badges: ['MULTI-AGENT', 'RAG'] },
   { n: '02', bg: 'bg-[#4ECDC4]', tag: 'FULL-STACK', title: 'Vietnam Youth Union Website', stack: 'React 19 / Vite / Express 5 / MySQL / Framer Motion', desc: '5-page organizational web system featuring dynamic event calendars, SQL-injection protected REST APIs, and a non-tech-friendly event posting dashboard.', href: `${GH}/youth-union-site`, cta: 'VIEW ON GITHUB', badges: ['FULL-STACK'] },
-  { n: '03', bg: 'bg-[#A855F7]', tag: 'GAME AI', title: 'AI Challenge 2026 & Bomberland Game Bots', stack: 'Python / Real-time Decision Game AI / Agile & Git', desc: 'Large-scale image/video search system and real-time decision-making bots for competitive game environments.', href: GH, cta: 'MORE ON GITHUB', badges: ['PYTHON', 'GAME AI', 'AGILE'] },
+  { n: '03', bg: 'bg-[#FFE600]', tag: 'ANDROID / ADHD', title: 'FlowyX: Android Assistant for Adults with ADHD', stack: 'Kotlin / Python / Gemini API / Android Keystore', desc: 'Built with a teammate for the RMIT ADC Hackathon 2026 (theme: Neurodivergence). Helps working adults with ADHD start and finish tasks: AI task breakdown into small timed steps, colour-ring timer, colour-block calendar, and Meety, which turns meeting transcripts into minutes and calendar tasks. Data stays on the device.', href: 'https://github.com/TrongKoi/hackathon-adc-2026', cta: 'VIEW ON GITHUB', badges: ['TEAM PROJECT', 'HACKATHON', 'AI'] },
+  { n: '04', bg: 'bg-[#A855F7]', tag: 'GAME AI', title: 'AI Challenge 2026 & Bomberland Game Bots', stack: 'Python / Real-time Decision Game AI / Agile & Git', desc: 'Large-scale image/video search system and real-time decision-making bots for competitive game environments.', href: GH, cta: 'MORE ON GITHUB', badges: ['PYTHON', 'GAME AI', 'AGILE'] },
 ]
 
 const awards = [
@@ -34,7 +35,7 @@ const cats = {
 const s = (cat, names) => names.map((name) => ({ cat, name }))
 const skills = [
   ...s('AI', ['LangChain', 'Multi-Agent Systems', 'RAG', 'ChromaDB', 'FAISS', 'Sentence-Transformers', 'Prompt Engineering', 'Claude & Gemini APIs', 'Pydantic']),
-  ...s('PROG', ['Python', 'JavaScript (ES6+)', 'Java', 'C++', 'SQL']),
+  ...s('PROG', ['Python', 'JavaScript (ES6+)', 'Java', 'C++', 'Kotlin', 'SQL']),
   ...s('WEB', ['React 19', 'Vite', 'Tailwind CSS v4', 'Framer Motion', 'Node.js', 'Express', 'REST APIs']),
   ...s('DB', ['MySQL', 'PostgreSQL/Supabase', 'SQLite', 'Git', 'GitHub', 'Vercel']),
 ]
@@ -398,7 +399,7 @@ export default function App() {
         {/* projects */}
         <section id="work" className="bg-[#FFE600] border-y-4 border-black px-6 md:px-16 py-24 flex flex-col gap-12">
           <div className="flex flex-col gap-5"><Tag>02 // TECHNICAL PROJECTS</Tag><H2>SELECTED WORK</H2></div>
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {projects.map((p) => (
               <motion.div key={p.n} {...pop} whileHover={{ x: -4, y: -4 }} className="shake flex flex-col bg-white border-4 border-black shadow-[10px_10px_0_#000]">
                 <div className={`flex justify-between items-center ${p.bg} border-b-4 border-black px-5 py-3.5 text-sm ${mono}`}><span>PROJECT {p.n}</span><span>{p.tag}</span></div>
