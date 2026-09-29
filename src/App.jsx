@@ -259,6 +259,8 @@ function Intro({ onDone }) {
       <FlyingPhoto src="/class.jpg" label="HCMUT x UTS" alt="HCMUT x UTS class photo" w={360} x={80} y={140} vx={190} vy={130} />
       <FlyingPhoto src="/hackathon.webp" label="ADC HACKATHON 2026" alt="Team photo at the ADC Hackathon" w={300} x={700} y={60} vx={-160} vy={210} />
       <FlyingPhoto src="/class-green.webp" label="CLASS PHOTO" alt="Class photo in green uniforms" w={280} x={300} y={420} vx={220} vy={-150} />
+      <FlyingPhoto src="/team-selfie.jpg" label="TEAM SELFIE" alt="Team selfie with a city view" w={260} x={1000} y={300} vx={-200} vy={-170} />
+      <FlyingPhoto src="/oisp.webp" label="OISP CONTEST" alt="Team photo at the OISP Community Day and Presentation Contest" w={310} x={520} y={540} vx={150} vy={-190} />
       <div className="relative flex justify-between text-sm font-bold">
         <span className="bg-[#FDF8F5] border-4 border-black shadow-[5px_5px_0_#000] px-3 py-1.5">
           <img src="/logos.png" alt="HCMUT and UTS logos" className="block h-12 md:h-16 w-auto" />
