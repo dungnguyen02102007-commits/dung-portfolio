@@ -565,7 +565,7 @@ export default function App() {
         <footer className="h-16 bg-black text-white overflow-hidden flex items-center">
           <div className={`mq text-base whitespace-nowrap ${mono}`}>
             {Array.from({ length: 4 }).map((_, i) => (
-              <span key={i} className="pr-10">DESIGNED IN NEO-BRUTALISM // POWERED BY REACT &amp; FRAMER MOTION // © 2026 NGUYEN QUANG DUNG //</span>
+              <span key={i} className="pr-10">POWERED BY REACT &amp; FRAMER MOTION // © 2026 NGUYEN QUANG DUNG //</span>
             ))}
           </div>
         </footer>
