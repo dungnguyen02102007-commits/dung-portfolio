@@ -149,9 +149,9 @@ function Ragdoll({ children }) {
 }
 
 // Class photo that drifts around the loading screen; grab it, throw it, let it fly on.
-function FlyingPhoto() {
+function FlyingPhoto({ src, label, alt, w = 360, x = 80, y = 140, vx = 190, vy = 130 }) {
   const ref = useRef(null)
-  const s = useRef({ x: 80, y: 140, vx: 190, vy: 130, rot: 0, drag: false, ox: 0, oy: 0, hist: [] })
+  const s = useRef({ x, y, vx, vy, rot: 0, drag: false, ox: 0, oy: 0, hist: [] })
 
   useEffect(() => {
     let raf
@@ -228,11 +228,11 @@ function FlyingPhoto() {
       onPointerMove={move}
       onPointerUp={up}
       onPointerCancel={up}
-      style={{ touchAction: 'none' }}
-      className="absolute left-0 top-0 z-20 w-[260px] md:w-[360px] cursor-grab active:cursor-grabbing select-none bg-white border-4 border-black shadow-[8px_8px_0_#000] p-2 will-change-transform"
+      style={{ touchAction: 'none', width: `min(${w}px, 60vw)` }}
+      className="absolute left-0 top-0 z-20 cursor-grab active:cursor-grabbing select-none bg-white border-4 border-black shadow-[8px_8px_0_#000] p-2 will-change-transform"
     >
-      <img src="/class.jpg" draggable={false} alt="HCMUT x UTS class photo" className="block w-full h-auto border-2 border-black" />
-      <div className="mt-1.5 flex justify-between font-mono font-bold text-[11px]"><span>HCMUT x UTS</span><span>GRAB &amp; THROW</span></div>
+      <img src={src} draggable={false} alt={alt} className="block w-full h-auto border-2 border-black" />
+      <div className="mt-1.5 flex justify-between font-mono font-bold text-[11px]"><span>{label}</span><span>GRAB &amp; THROW</span></div>
     </div>
   )
 }
@@ -246,28 +246,38 @@ function Intro({ onDone }) {
   const ready = pct >= 100
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex flex-col justify-between bg-[#FAF8F5] border-b-[3px] border-black px-6 py-8 md:px-[72px] md:py-14 font-mono"
+      className="fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#FFE600] border-b-4 border-black px-6 py-8 md:px-[72px] md:py-14 font-mono"
+      style={{ backgroundImage: 'radial-gradient(#00000026 2px, transparent 2px)', backgroundSize: '28px 28px' }}
       exit={{ y: '-100%' }}
       transition={{ duration: 1.1, ease: [0.77, 0, 0.18, 1] }}
     >
-      <FlyingPhoto />
-      <div className="flex justify-between text-sm"><span>DUNG.SYS / BOOT</span><span>HCMC / 2026</span></div>
-      <div className="flex flex-col gap-8">
-        <div className="flex items-end gap-4">
-          <span className="font-display text-[110px] md:text-[190px] leading-[.85] tracking-[-4px]">{pct}</span>
-          <span className="font-display text-4xl md:text-6xl pb-1.5 text-[#FF5E97]">%</span>
-        </div>
-        <div className="h-[22px] max-w-[820px] border-[3px] border-black bg-white shadow-[4px_4px_0_#000]">
-          <div className="h-full bg-[#4ECDC4] border-r-[3px] border-black box-border transition-[width] duration-150" style={{ width: pct + '%' }} />
-        </div>
-        <div className="flex items-center gap-2.5 text-base"><span className="w-3 h-3 rounded-full bg-[#FFE600] border-2 border-black" />LOADING<span className="animate-pulse">_</span></div>
+      <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#4ECDC4] border-4 border-black" />
+      <div aria-hidden className="pointer-events-none absolute right-40 bottom-24 w-32 h-32 rotate-12 bg-[#FF5E97] border-4 border-black shadow-[8px_8px_0_#000]" />
+      <div aria-hidden className="pointer-events-none absolute -left-10 bottom-1/3 w-44 h-44 rounded-full bg-[#A855F7] border-4 border-black" />
+      <div aria-hidden className="pointer-events-none absolute left-1/3 top-10 w-24 h-24 -rotate-6 bg-[#22C55E] border-4 border-black" />
+      <FlyingPhoto src="/class.jpg" label="HCMUT x UTS" alt="HCMUT x UTS class photo" w={360} x={80} y={140} vx={190} vy={130} />
+      <FlyingPhoto src="/hackathon.webp" label="ADC HACKATHON 2026" alt="Team photo at the ADC Hackathon" w={300} x={700} y={60} vx={-160} vy={210} />
+      <FlyingPhoto src="/class-green.webp" label="CLASS PHOTO" alt="Class photo in green uniforms" w={280} x={300} y={420} vx={220} vy={-150} />
+      <div className="relative flex justify-between text-sm font-bold">
+        <span className="bg-black text-[#FFE600] px-3 py-1.5">DUNG.SYS / BOOT</span>
+        <span className="bg-white border-[3px] border-black px-3 py-1 shadow-[4px_4px_0_#000]">HCMC / 2026</span>
       </div>
-      <div className="flex items-end justify-between gap-4 flex-wrap">
-        <div className="text-[13px] leading-8 text-neutral-600">&gt; multi-agent modules<br />&gt; rag memory<br />&gt; react 19 ui</div>
+      <div className="relative flex flex-col gap-8">
+        <div className="flex items-end gap-4">
+          <span className="font-display text-[110px] md:text-[190px] leading-[.85] tracking-[-4px] [text-shadow:8px_8px_0_#FF5E97,12px_12px_0_#000]">{pct}</span>
+          <span className="font-display text-4xl md:text-6xl pb-1.5">%</span>
+        </div>
+        <div className="h-[34px] max-w-[820px] border-4 border-black bg-white shadow-[8px_8px_0_#000]">
+          <div className="h-full bg-[#FF5E97] border-r-4 border-black box-border transition-[width] duration-150" style={{ width: pct + '%', backgroundImage: 'repeating-linear-gradient(45deg, transparent 0 10px, #00000022 10px 20px)' }} />
+        </div>
+        <div className="self-start flex items-center gap-2.5 bg-[#4ECDC4] border-4 border-black shadow-[5px_5px_0_#000] px-4 py-2 text-base font-bold"><span className="w-3 h-3 rounded-full bg-[#22C55E] border-2 border-black" />LOADING<span className="animate-pulse">_</span></div>
+      </div>
+      <div className="relative flex items-end justify-between gap-4 flex-wrap">
+        <div className="bg-white border-4 border-black shadow-[5px_5px_0_#000] px-4 py-3 text-[13px] leading-7 font-bold">&gt; multi-agent modules<br />&gt; rag memory<br />&gt; react 19 ui</div>
         <button
           disabled={!ready}
           onClick={onDone}
-          className={`border-[3px] border-black shadow-[5px_5px_0_#000] px-7 py-4 font-display text-xl md:text-[22px] uppercase transition-all enabled:hover:translate-x-0.5 enabled:hover:translate-y-0.5 enabled:hover:shadow-[3px_3px_0_#000] ${ready ? 'bg-[#FFE600]' : 'bg-[#EDEAE3]'}`}
+          className={`border-4 border-black shadow-[8px_8px_0_#000] px-7 py-4 font-display text-xl md:text-[22px] uppercase transition-all enabled:hover:translate-x-1 enabled:hover:translate-y-1 enabled:hover:shadow-[4px_4px_0_#000] ${ready ? 'bg-[#FF5E97]' : 'bg-white'}`}
         >
           {ready ? 'Enter portfolio →' : 'Loading...'}
         </button>
