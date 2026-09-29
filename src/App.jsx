@@ -246,7 +246,7 @@ export default function App() {
         {/* hero */}
         <section className="grid lg:grid-cols-2 gap-10 px-6 md:px-16 pt-6 pb-20">
           <div className="flex flex-col gap-5">
-            <div className={`self-start flex items-center gap-3 bg-white border-4 border-black shadow-[6px_6px_0_#000] px-4 py-3 text-sm ${mono}`}>
+            <div className={`shake self-start flex items-center gap-3 bg-white border-4 border-black shadow-[6px_6px_0_#000] px-4 py-3 text-sm ${mono}`}>
               <span className="w-4 h-4 shrink-0 rounded-full bg-[#22C55E] border-[3px] border-black" />AVAILABLE FOR AI &amp; FULL-STACK ROLES IN HO CHI MINH CITY
             </div>
             <h1 className="m-0 font-display uppercase leading-[.92] tracking-[-3px] text-[64px] sm:text-[110px] xl:text-[164px]">
@@ -257,10 +257,10 @@ export default function App() {
             <div className={`self-start bg-black text-white uppercase px-4 py-2.5 text-lg md:text-[26px] ${mono}`}>AI DEVELOPER &amp; FULL-STACK ENGINEER</div>
             <div className="flex flex-wrap gap-3">
               {[['UTS AI MAJOR (GPA 3.21)', 'bg-[#A855F7]'], ['LANGCHAIN & RAG SPECIALIST', 'bg-[#4ECDC4]'], ['REACT 19 TECH', 'bg-[#FF5E97]']].map(([t, bg]) => (
-                <motion.div key={t} whileHover={{ x: -3, y: -3 }} className={`${bg} border-4 border-black shadow-[6px_6px_0_#000] px-4 py-2.5 text-sm ${mono}`}>{t}</motion.div>
+                <motion.div key={t} whileHover={{ x: -3, y: -3 }} className={`shake ${bg} border-4 border-black shadow-[6px_6px_0_#000] px-4 py-2.5 text-sm ${mono}`}>{t}</motion.div>
               ))}
             </div>
-            <button onClick={downloadCv} className={`self-start flex items-center gap-2.5 bg-[#22C55E] border-4 border-black shadow-[8px_8px_0_#000] px-6 py-3.5 font-display text-xl uppercase transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[5px_5px_0_#000]`}>
+            <button onClick={downloadCv} className={`shake self-start flex items-center gap-2.5 bg-[#22C55E] border-4 border-black shadow-[8px_8px_0_#000] px-6 py-3.5 font-display text-xl uppercase transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[5px_5px_0_#000]`}>
               <Download size={22} />DOWNLOAD CV
             </button>
           </div>
@@ -281,13 +281,13 @@ export default function App() {
           <div className="flex flex-col gap-6">
             <Tag>01 // ABOUT ME</Tag>
             <H2>BUILDING <span className="bg-[#4ECDC4] px-2.5 border-4 border-black">AGENTS</span> THAT ACTUALLY DO THINGS</H2>
-            <div className="bg-white border-4 border-black shadow-[10px_10px_0_#000] p-7 text-xl leading-relaxed">
+            <div className="shake bg-white border-4 border-black shadow-[10px_10px_0_#000] p-7 text-xl leading-relaxed">
               IT student in the University of Technology Sydney (UTS) &amp; HCMUT joint program in HCMC (Cohort 2025 - 2028). Passionate about <b>multi-agent systems</b>, <b>RAG architecture</b>, and <b>responsive web systems</b>.
             </div>
           </div>
           <div className="flex flex-col gap-6 lg:pt-11">
             {stats.map((st) => (
-              <motion.div key={st.big} {...pop} className={`flex items-center gap-6 ${st.bg} border-4 border-black shadow-[10px_10px_0_#000] px-7 py-5`}>
+              <motion.div key={st.big} {...pop} className={`shake flex items-center gap-6 ${st.bg} border-4 border-black shadow-[10px_10px_0_#000] px-7 py-5`}>
                 <div className="font-display text-6xl md:text-[84px] leading-none min-w-[150px] md:min-w-[230px]">{st.big}</div>
                 <div className={`text-sm md:text-[15px] leading-snug ${mono}`}>{st.label}</div>
               </motion.div>
@@ -300,7 +300,7 @@ export default function App() {
           <div className="flex flex-col gap-5"><Tag>02 // TECHNICAL PROJECTS</Tag><H2>SELECTED WORK</H2></div>
           <div className="grid lg:grid-cols-3 gap-8">
             {projects.map((p) => (
-              <motion.div key={p.n} {...pop} whileHover={{ x: -4, y: -4 }} className="flex flex-col bg-white border-4 border-black shadow-[10px_10px_0_#000]">
+              <motion.div key={p.n} {...pop} whileHover={{ x: -4, y: -4 }} className="shake flex flex-col bg-white border-4 border-black shadow-[10px_10px_0_#000]">
                 <div className={`flex justify-between items-center ${p.bg} border-b-4 border-black px-5 py-3.5 text-sm ${mono}`}><span>PROJECT {p.n}</span><span>{p.tag}</span></div>
                 <div className="p-6 flex flex-col gap-4 grow">
                   <h3 className="m-0 font-display text-[28px] leading-tight uppercase">{p.title}</h3>
@@ -322,7 +322,7 @@ export default function App() {
         <section id="xp" className="px-6 md:px-16 py-24 flex flex-col gap-10">
           <div className="flex flex-col gap-5"><Tag>03 // EXPERIENCE &amp; COMPETITIONS</Tag><H2>RECEIPTS</H2></div>
           <div className="grid lg:grid-cols-5 gap-8">
-            <motion.div {...pop} className="lg:col-span-2 flex flex-col bg-[#4ECDC4] border-4 border-black shadow-[10px_10px_0_#000] p-7 gap-3.5">
+            <motion.div {...pop} className="shake lg:col-span-2 flex flex-col bg-[#4ECDC4] border-4 border-black shadow-[10px_10px_0_#000] p-7 gap-3.5">
               <div className={`self-start bg-black text-white px-3 py-1.5 text-[13px] ${mono}`}>WORK EXPERIENCE // AUG 2026 - PRESENT</div>
               <div className="font-display text-4xl leading-none uppercase">DATA ANNOTATOR</div>
               <div className={`text-lg ${mono}`}>@ AI FOR VIETNAM</div>
@@ -330,7 +330,7 @@ export default function App() {
             </motion.div>
             <div className="lg:col-span-3 grid sm:grid-cols-2 gap-6">
               {awards.map((a) => (
-                <motion.div key={a.title} {...pop} className="flex bg-white border-4 border-black shadow-[8px_8px_0_#000]">
+                <motion.div key={a.title} {...pop} className="shake flex bg-white border-4 border-black shadow-[8px_8px_0_#000]">
                   <div className={`w-[92px] shrink-0 ${a.bg} border-r-4 border-black flex items-center justify-center font-display text-2xl text-center`}>{a.rank}</div>
                   <div className="p-4 flex flex-col gap-1.5"><div className="font-bold text-base leading-snug">{a.title}</div><div className="text-sm leading-snug">{a.note}</div></div>
                 </motion.div>
@@ -350,7 +350,7 @@ export default function App() {
           <div className="bg-white border-4 border-black shadow-[10px_10px_0_#000] p-6 md:p-8 flex flex-wrap gap-3.5 content-start min-h-[300px]">
             <AnimatePresence mode="popLayout">
               {shown.map((k) => (
-                <motion.span layout key={k.name} initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} className={`${cats[k.cat].bg} border-4 border-black shadow-[5px_5px_0_#000] px-4 py-2.5 text-base ${mono}`}>{k.name}</motion.span>
+                <motion.span layout key={k.name} initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} className={`shake ${cats[k.cat].bg} border-4 border-black shadow-[5px_5px_0_#000] px-4 py-2.5 text-base ${mono}`}>{k.name}</motion.span>
               ))}
             </AnimatePresence>
           </div>
@@ -364,7 +364,7 @@ export default function App() {
             <p className="m-0 text-lg">Type a command or hit a quick action. Try <b>help</b>.</p>
             <div className="flex flex-wrap gap-2.5">
               {quick.map(([c, bg]) => (
-                <button key={c} onClick={() => run(c)} className={`${bg} border-4 border-black shadow-[5px_5px_0_#000] px-3.5 py-2.5 text-sm ${mono}`}>{c}</button>
+                <button key={c} onClick={() => run(c)} className={`shake ${bg} border-4 border-black shadow-[5px_5px_0_#000] px-3.5 py-2.5 text-sm ${mono}`}>{c}</button>
               ))}
             </div>
           </div>
@@ -390,7 +390,7 @@ export default function App() {
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="grid sm:grid-cols-2 gap-6 content-start">
               {contacts.map(({ bg, label, value, href, Icon }) => (
-                <motion.a key={label} {...pop} whileHover={{ x: -4, y: -4 }} href={href} target="_blank" rel="noopener noreferrer" className={`no-underline text-black ${bg} border-4 border-black shadow-[8px_8px_0_#000] p-5 flex flex-col gap-2.5 min-w-0`}>
+                <motion.a key={label} {...pop} whileHover={{ x: -4, y: -4 }} href={href} target="_blank" rel="noopener noreferrer" className={`shake no-underline text-black ${bg} border-4 border-black shadow-[8px_8px_0_#000] p-5 flex flex-col gap-2.5 min-w-0`}>
                   <div className={`flex items-center gap-2 text-[13px] ${mono}`}><Icon size={16} />{label}</div>
                   <div className="font-bold text-lg leading-snug break-words">{value}</div>
                 </motion.a>

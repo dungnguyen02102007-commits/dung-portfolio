@@ -8,6 +8,15 @@ html { scroll-behavior: smooth; }
 body { margin: 0; background: #F4F4F0; font-family: var(--font-sans); color: #000; }
 @keyframes mq { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 .mq { display: flex; width: max-content; animation: mq 30s linear infinite; }
-@media (prefers-reduced-motion: reduce) { .mq { animation: none } }
+@keyframes wobble {
+  0%, 100% { translate: 0 0; rotate: 0deg }
+  15% { translate: -6px -2px; rotate: -1.6deg }
+  30% { translate: 6px 2px; rotate: 1.6deg }
+  45% { translate: -5px 1px; rotate: -1.1deg }
+  60% { translate: 4px -1px; rotate: 0.9deg }
+  80% { translate: -2px 1px; rotate: -0.4deg }
+}
+.shake:hover { animation: wobble 0.45s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .mq, .shake:hover { animation: none } }
 button, a { cursor: pointer }
 :focus-visible { outline: 4px solid #A855F7; outline-offset: 2px }
