@@ -260,7 +260,9 @@ function Intro({ onDone }) {
       <FlyingPhoto src="/hackathon.webp" label="ADC HACKATHON 2026" alt="Team photo at the ADC Hackathon" w={300} x={700} y={60} vx={-160} vy={210} />
       <FlyingPhoto src="/class-green.webp" label="CLASS PHOTO" alt="Class photo in green uniforms" w={280} x={300} y={420} vx={220} vy={-150} />
       <div className="relative flex justify-between text-sm font-bold">
-        <span className="bg-black text-[#FFE600] px-3 py-1.5">DUNG.SYS / BOOT</span>
+        <span className="bg-[#FDF8F5] border-4 border-black shadow-[5px_5px_0_#000] px-3 py-1.5">
+          <img src="/logos.png" alt="HCMUT and UTS logos" className="block h-12 md:h-16 w-auto" />
+        </span>
         <span className="bg-white border-[3px] border-black px-3 py-1 shadow-[4px_4px_0_#000]">HCMC / 2026</span>
       </div>
       <div className="relative flex flex-col gap-8">
@@ -332,9 +334,8 @@ export default function App() {
       <div className="overflow-x-hidden">
         {/* nav */}
         <nav className="flex items-center justify-between px-6 md:px-16 h-[84px]">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-[#FFE600] border-4 border-black shadow-[4px_4px_0_#000] flex items-center justify-center font-display text-xl">D</div>
-            <span className={`${mono} text-base`}>DUNG.SYS</span>
+          <div className="bg-[#FDF8F5] border-4 border-black shadow-[4px_4px_0_#000] px-3 py-1">
+            <img src="/logos.png" alt="HCMUT and UTS logos" className="block h-11 md:h-12 w-auto" />
           </div>
           <div className={`hidden md:flex gap-3 text-sm ${mono}`}>
             {[['about', 'ABOUT'], ['work', 'PROJECTS'], ['xp', 'EXPERIENCE'], ['skills', 'SKILLS']].map(([id, l]) => (
