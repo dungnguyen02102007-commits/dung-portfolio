@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpRight, Download, Github, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight, BookOpen, Download, Github, Mail, MapPin, Phone } from 'lucide-react'
 
 const GH = 'https://github.com/dungnguyen02102007-commits'
 const shadow = 'shadow-[8px_8px_0px_0px_#000]'
@@ -15,7 +15,7 @@ const stats = [
 const projects = [
   { n: '01', bg: 'bg-[#FF5E97]', tag: 'MULTI-AGENT / RAG', title: 'AMASE: Multi-Agent AI System for CV Evaluation', stack: 'Python / LangChain / Claude & Gemini APIs / ChromaDB / SQLite', desc: 'Automated 3-step CV evaluation pipeline: Gemini CV parser, Claude ATS rewriter, Claude hiring probability estimator. Features a ChromaDB RAG reference library and real-time job scraping from LinkedIn/Seek.', href: `${GH}/AMASE-AI`, cta: 'VIEW ON GITHUB', badges: ['MULTI-AGENT', 'RAG'] },
   { n: '02', bg: 'bg-[#4ECDC4]', tag: 'FULL-STACK', title: 'Vietnam Youth Union Website', stack: 'React 19 / Vite / Express 5 / MySQL / Framer Motion', desc: '5-page organizational web system featuring dynamic event calendars, SQL-injection protected REST APIs, and a non-tech-friendly event posting dashboard.', href: `${GH}/youth-union-site`, cta: 'VIEW ON GITHUB', badges: ['FULL-STACK'] },
-  { n: '03', bg: 'bg-[#FFE600]', tag: 'ANDROID / ADHD', title: 'FlowyX: Android Assistant for Adults with ADHD', stack: 'Kotlin / Python / Gemini API / Android Keystore', desc: 'Built with a teammate for the RMIT ADC Hackathon 2026 (theme: Neurodivergence). Helps working adults with ADHD start and finish tasks: AI task breakdown into small timed steps, colour-ring timer, colour-block calendar, and Meety, which turns meeting transcripts into minutes and calendar tasks. Data stays on the device.', href: 'https://github.com/TrongKoi/hackathon-adc-2026', cta: 'VIEW ON GITHUB', badges: ['TEAM PROJECT', 'HACKATHON', 'AI'] },
+  { n: '03', bg: 'bg-[#FFE600]', tag: 'ANDROID / ADHD', title: 'FlowyX: Android Assistant for Adults with ADHD', stack: 'Kotlin / Python / Gemini API / Android Keystore', desc: 'Built with a teammate for the RMIT ADC Hackathon 2026 (theme: Neurodivergence). Helps working adults with ADHD start and finish tasks: AI task breakdown into small timed steps, colour-ring timer, colour-block calendar, and Meety, which turns meeting transcripts into minutes and calendar tasks. Data stays on the device.', href: 'https://heyzine.com/flip-book/3de5725a39.html', cta: 'VIEW FLIPBOOK', badges: ['TEAM PROJECT', 'HACKATHON', 'AI'] },
   { n: '04', bg: 'bg-[#A855F7]', tag: 'GAME AI', title: 'AI Challenge 2026 & Bomberland Game Bots', stack: 'Python / Real-time Decision Game AI / Agile & Git', desc: 'Large-scale image/video search system and real-time decision-making bots for competitive game environments.', href: GH, cta: 'MORE ON GITHUB', badges: ['PYTHON', 'GAME AI', 'AGILE'] },
 ]
 
@@ -408,7 +408,7 @@ export default function App() {
                   <div className={`text-[13px] bg-[#F4F4F0] border-[3px] border-black p-2.5 leading-normal ${mono}`}>{p.stack}</div>
                   <div className="text-base leading-relaxed grow">{p.desc}</div>
                   <a href={p.href} target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center gap-2 no-underline bg-black text-white p-3 text-sm border-4 border-black hover:bg-[#FF5E97] hover:text-black ${mono}`}>
-                    <Github size={18} />{p.cta}<ArrowUpRight size={18} />
+                    {p.href.includes('github.com') ? <Github size={18} /> : <BookOpen size={18} />}{p.cta}<ArrowUpRight size={18} />
                   </a>
                   <div className="flex flex-wrap gap-2">
                     {p.badges.map((b) => <span key={b} className={`bg-black text-white px-2.5 py-1.5 text-xs ${mono}`}>{b}</span>)}
