@@ -294,7 +294,7 @@ export default function App() {
   const [filter, setFilter] = useState('ALL')
   const [cmd, setCmd] = useState('')
   const [lines, setLines] = useState([
-    { t: 'Hey, you made it! I'm Jarvis. Wanna know more about Dung, or just chat with me? Ask away, or type "help" for commands.', k: 'out' },
+    { t: `Hey, you made it! I'm Jarvis. Wanna know more about Dung, or just chat with me? Ask away, or type "help" for commands.`, k: 'out' },
   ])
   const [toast, setToast] = useState(false)
   const busy = useRef(false)
