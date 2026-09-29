@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpRight, Github, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight, Download, Github, Mail, MapPin, Phone } from 'lucide-react'
 
 const GH = 'https://github.com/dungnguyen02102007-commits'
 const shadow = 'shadow-[8px_8px_0px_0px_#000]'
@@ -51,7 +51,7 @@ const commands = {
   about: ['Nguyen Quang Dung // IT student, UTS x HCMUT (2025-2028).', 'Focus: multi-agent systems, RAG, responsive web.'],
   skills: ['AI: LangChain, Multi-Agent, RAG, Claude & Gemini APIs', 'CODE: Python, JS, Java, C++, SQL', 'WEB: React 19, Vite, Tailwind v4, Node, Express', 'DATA: MySQL, PostgreSQL, SQLite, Git'],
   contact: ['email: nhoxben1234@gmail.com', 'phone: +84 707 005 345', 'github: github.com/dungnguyen02102007-commits'],
-  'download-cv': ['Ask by email and I will send the latest copy of my CV.'],
+  'download-cv': ['Downloading QuangDung_CV.pdf ...'],
 }
 const quick = [['help', 'bg-[#FFE600]'], ['about', 'bg-[#4ECDC4]'], ['skills', 'bg-[#FF5E97]'], ['contact', 'bg-[#A855F7]'], ['download-cv', 'bg-[#22C55E]']]
 
@@ -62,6 +62,91 @@ const H2 = ({ children, className = '' }) => (
   <h2 className={`m-0 font-display uppercase leading-[.95] text-5xl md:text-7xl ${className}`}>{children}</h2>
 )
 const pop = { initial: { opacity: 0, y: 40, scale: 0.96 }, whileInView: { opacity: 1, y: 0, scale: 1 }, viewport: { once: true, margin: '-60px' }, transition: { type: 'spring', stiffness: 260, damping: 20 } }
+
+const CV_URL = '/QuangDung_CV.pdf'
+const downloadCv = () => {
+  const a = document.createElement('a')
+  a.href = CV_URL
+  a.download = 'QuangDung_CV.pdf'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
+// Pendulum ragdoll: photo hangs from a nail, grab it and swing it.
+function Ragdoll({ children }) {
+  const box = useRef(null)
+  const swing = useRef(null)
+  const s = useRef({ a: 0.35, w: 0, drag: false, lastA: 0, lastT: 0 })
+
+  useEffect(() => {
+    let raf
+    let last = performance.now()
+    const tick = (t) => {
+      const p = s.current
+      const dt = Math.min(0.033, (t - last) / 1000)
+      last = t
+      if (!p.drag) {
+        p.w += (-38 * Math.sin(p.a) - 0.9 * p.w) * dt
+        p.a += p.w * dt
+      }
+      if (swing.current) swing.current.style.transform = `rotate(${(p.a * 180) / Math.PI}deg)`
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  const angleFrom = (e) => {
+    const r = box.current.getBoundingClientRect()
+    const dx = e.clientX - (r.left + r.width / 2)
+    const dy = Math.max(60, e.clientY - r.top)
+    return Math.max(-1.5, Math.min(1.5, Math.atan2(-dx, dy)))
+  }
+  const down = (e) => {
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const p = s.current
+    p.drag = true
+    p.w = 0
+    p.lastA = angleFrom(e)
+    p.lastT = performance.now()
+  }
+  const move = (e) => {
+    const p = s.current
+    if (!p.drag) return
+    const a = angleFrom(e)
+    const now = performance.now()
+    const dt = Math.max(0.008, (now - p.lastT) / 1000)
+    p.w = 0.6 * p.w + 0.4 * ((a - p.lastA) / dt)
+    p.a = a
+    p.lastA = a
+    p.lastT = now
+  }
+  const up = () => {
+    const p = s.current
+    p.drag = false
+    p.w = Math.max(-12, Math.min(12, p.w))
+  }
+
+  return (
+    <div ref={box} className="relative w-full max-w-[470px] select-none">
+      <div ref={swing} className="origin-top will-change-transform">
+        <div className="mx-auto w-1.5 h-10 bg-black" />
+        <div
+          onPointerDown={down}
+          onPointerMove={move}
+          onPointerUp={up}
+          onPointerCancel={up}
+          style={{ touchAction: 'none' }}
+          className="cursor-grab active:cursor-grabbing bg-white border-4 border-black shadow-[14px_14px_0_#000] p-[18px] pb-[22px]"
+        >
+          {children}
+        </div>
+      </div>
+      <div className="absolute left-1/2 -top-1 -translate-x-1/2 w-5 h-5 rounded-full bg-[#FF5E97] border-4 border-black" />
+    </div>
+  )
+}
 
 function Intro({ onDone }) {
   const [pct, setPct] = useState(0)
@@ -116,6 +201,7 @@ export default function App() {
     const c = raw.trim().toLowerCase()
     if (!c) return
     if (c === 'clear') { setLines([]); setCmd(''); return }
+    if (c === 'download-cv') downloadCv()
     const out = commands[c] || [`command not found: ${c} (try "help")`]
     setLines((l) => [...l, { t: '$ ' + c, k: 'in' }, ...out.map((t) => ({ t, k: 'out' }))])
     setCmd('')
@@ -174,20 +260,19 @@ export default function App() {
                 <motion.div key={t} whileHover={{ x: -3, y: -3 }} className={`${bg} border-4 border-black shadow-[6px_6px_0_#000] px-4 py-2.5 text-sm ${mono}`}>{t}</motion.div>
               ))}
             </div>
+            <button onClick={downloadCv} className={`self-start flex items-center gap-2.5 bg-[#22C55E] border-4 border-black shadow-[8px_8px_0_#000] px-6 py-3.5 font-display text-xl uppercase transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[5px_5px_0_#000]`}>
+              <Download size={22} />DOWNLOAD CV
+            </button>
           </div>
           <div className="relative flex items-center justify-center">
             <div className={`absolute bottom-14 left-0 z-10 -rotate-[8deg] bg-[#22C55E] border-4 border-black shadow-[6px_6px_0_#000] px-3.5 py-2 text-sm ${mono}`}>CODE + COFFEE</div>
-            <motion.div
-              animate={{ y: [0, -26, 0], rotate: [3, 1, 3] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-full max-w-[470px] bg-white border-4 border-black shadow-[14px_14px_0_#000] p-[18px] pb-[22px]"
-            >
+            <Ragdoll>
               <div className="relative w-full aspect-[47/52] bg-[#FFE600] border-4 border-black overflow-hidden flex items-center justify-center font-display text-7xl">
                 <span className="absolute">DUNG</span>
-                <img src="/dung.jpg" alt="Portrait of Nguyen Quang Dung wearing tinted glasses and headphones" className="absolute inset-0 w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                <img src="/dung.jpg" draggable={false} alt="Portrait of Nguyen Quang Dung wearing tinted glasses and headphones" className="absolute inset-0 w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none' }} />
               </div>
-              <div className={`mt-4 flex justify-between text-[15px] ${mono}`}><span>IMG_DUNG.JPG</span><span>HCMC // 2026</span></div>
-            </motion.div>
+              <div className={`mt-4 flex justify-between text-[15px] ${mono}`}><span>DRAG &amp; SWING ME</span><span>HCMC // 2026</span></div>
+            </Ragdoll>
           </div>
         </section>
 
