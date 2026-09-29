@@ -356,7 +356,7 @@ export default function App() {
               <span className="inline-block bg-[#FFE600] border-4 border-black px-4 shadow-[10px_10px_0_#000]">QUANG</span>
               <span className="block mt-3">DUNG<span className="text-[#FF5E97]">.</span></span>
             </h1>
-            <div className={`self-start bg-black text-white uppercase px-4 py-2.5 text-lg md:text-[26px] ${mono}`}>AI DEVELOPER &amp; FULL-STACK ENGINEER</div>
+            <div className={`self-start bg-black text-white uppercase px-4 py-2.5 text-lg md:text-[24px] leading-snug ${mono}`}>A 2007 guy with a dream of being AI engineer</div>
             <div className="flex flex-wrap gap-3">
               {[['UTS AI MAJOR (GPA 3.21)', 'bg-[#A855F7]'], ['LANGCHAIN & RAG SPECIALIST', 'bg-[#4ECDC4]'], ['REACT 19 TECH', 'bg-[#FF5E97]']].map(([t, bg]) => (
                 <motion.div key={t} whileHover={{ x: -3, y: -3 }} className={`shake ${bg} border-4 border-black shadow-[6px_6px_0_#000] px-4 py-2.5 text-sm ${mono}`}>{t}</motion.div>
