@@ -356,7 +356,7 @@ export default function App() {
               <span className="inline-block bg-[#FFE600] border-4 border-black px-4 shadow-[10px_10px_0_#000]">QUANG</span>
               <span className="block mt-3">DUNG<span className="text-[#FF5E97]">.</span></span>
             </h1>
-            <div className={`self-start bg-black text-white uppercase px-4 py-2.5 text-lg md:text-[24px] leading-snug ${mono}`}>A 2007 guy with a dream of being <span className="inline-block bg-[#FFE600] text-black px-2 -rotate-2 border-2 border-white shadow-[3px_3px_0_#FF5E97]">AI engineer</span></div>
+            <div className={`self-start bg-black text-white uppercase px-4 py-2.5 text-lg md:text-[24px] leading-[1.9] ${mono}`}>A <span className="inline-block whitespace-nowrap bg-[#22C55E] text-black px-2 rotate-2 border-2 border-white shadow-[3px_3px_0_#FFE600]">2007</span> guy with a dream of being <span className="inline-block whitespace-nowrap bg-[#FF5E97] text-black px-2 -rotate-2 border-2 border-white shadow-[3px_3px_0_#4ECDC4]">AI engineer</span></div>
             <div className="flex flex-wrap gap-3">
               {[['UTS AI MAJOR (GPA 3.21)', 'bg-[#A855F7]'], ['LANGCHAIN & RAG SPECIALIST', 'bg-[#4ECDC4]'], ['REACT 19 TECH', 'bg-[#FF5E97]']].map(([t, bg]) => (
                 <motion.div key={t} whileHover={{ x: -3, y: -3 }} className={`shake ${bg} border-4 border-black shadow-[6px_6px_0_#000] px-4 py-2.5 text-sm ${mono}`}>{t}</motion.div>
