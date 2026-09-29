@@ -3,9 +3,10 @@
 
 const MODELS = [
   process.env.GEMINI_MODEL,
+  'gemini-2.5-flash-lite',
+  'gemini-2.5-flash',
+  'gemini-2.0-flash',
   'gemini-3.1-flash-lite',
-  'gemini-3.5-flash-lite',
-  'gemini-3-flash-preview',
 ].filter(Boolean)
 
 const SYSTEM = `You are the assistant inside the portfolio website of Nguyen Quang Dung (a 2007-born IT student aiming to become an AI engineer).
@@ -65,7 +66,9 @@ export default async function handler(req, res) {
           generationConfig: { maxOutputTokens: 700, temperature: 0.5 },
         }),
       })
+      if (!r.ok) console.error('gemini', model, r.status, (await r.text()).slice(0, 300))
       if (r.status === 404 || r.status === 429 || r.status >= 500) continue // try the next model
+      if (r.status === 400 || r.status === 403) continue
       if (!r.ok) break
       const data = await r.json()
       const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim()
@@ -74,5 +77,5 @@ export default async function handler(req, res) {
       /* try next model */
     }
   }
-  return res.status(502).json({ error: 'The assistant is busy right now. Try the commands: help, about, skills, contact.' })
+  return res.status(502).json({ error: 'Mr. Jarvis is busy right now. Try the commands: help, about, skills, contact.' })
 }
