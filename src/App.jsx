@@ -48,7 +48,7 @@ const contacts = [
 ]
 
 const commands = {
-  help: ['Commands: help, about, skills, contact, download-cv, clear'],
+  help: ['Commands: help, about, skills, contact, download-cv, clear', 'Or just ask me anything about Dung (EN / VI).'],
   about: ['Nguyen Quang Dung // IT student, UTS x HCMUT (2025-2028).', 'Focus: multi-agent systems, RAG, responsive web.'],
   skills: ['AI: LangChain, Multi-Agent, RAG, Claude & Gemini APIs', 'CODE: Python, JS, Java, C++, SQL', 'WEB: React 19, Vite, Tailwind v4, Node, Express', 'DATA: MySQL, PostgreSQL, SQLite, Git'],
   contact: ['email: nhoxben1234@gmail.com', 'phone: +84 707 005 345', 'github: github.com/dungnguyen02102007-commits'],
@@ -295,6 +295,8 @@ export default function App() {
   const [cmd, setCmd] = useState('')
   const [lines, setLines] = useState([{ t: 'DUNG.SYS v1.0 // type "help" for commands', k: 'dim' }])
   const [toast, setToast] = useState(false)
+  const busy = useRef(false)
+  const history = useRef([])
 
   useEffect(() => {
     document.body.style.overflow = intro ? 'hidden' : ''
@@ -304,10 +306,36 @@ export default function App() {
     const c = raw.trim().toLowerCase()
     if (!c) return
     if (c === 'clear') { setLines([]); setCmd(''); return }
+    if (!commands[c]) { ask(raw.trim().slice(0, 300)); return }
     if (c === 'download-cv') downloadCv()
-    const out = commands[c] || [`command not found: ${c} (try "help")`]
-    setLines((l) => [...l, { t: '$ ' + c, k: 'in' }, ...out.map((t) => ({ t, k: 'out' }))])
+    setLines((l) => [...l, { t: '$ ' + c, k: 'in' }, ...commands[c].map((t) => ({ t, k: 'out' }))])
     setCmd('')
+  }
+  // anything that is not a command goes to the chatbot (/api/chat -> Gemini)
+  const ask = async (question) => {
+    if (busy.current) return
+    busy.current = true
+    setCmd('')
+    setLines((l) => [...l, { t: '$ ' + question, k: 'in' }, { t: 'thinking...', k: 'dim' }])
+    let reply
+    try {
+      const r = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [...history.current, { role: 'user', text: question }] }),
+      })
+      const j = await r.json().catch(() => ({}))
+      reply = r.ok && j.reply ? j.reply : j.error || 'Chatbot is offline. Try: help, about, skills, contact.'
+      if (r.ok && j.reply) history.current = [...history.current, { role: 'user', text: question }, { role: 'model', text: j.reply }].slice(-6)
+    } catch {
+      reply = 'Chatbot is offline. Try: help, about, skills, contact.'
+    }
+    let i = 0
+    const id = setInterval(() => {
+      i += 3
+      setLines((l) => { const n = [...l]; n[n.length - 1] = { t: reply.slice(0, i), k: 'out' }; return n })
+      if (i >= reply.length) { clearInterval(id); busy.current = false }
+    }, 16)
   }
   const send = (e) => {
     e.preventDefault()
@@ -476,11 +504,11 @@ export default function App() {
               <span className="ml-2">dung@portfolio:~</span>
             </div>
             <div className="grow overflow-auto p-4 font-mono text-[15px] leading-relaxed flex flex-col">
-              {lines.map((l, i) => <div key={i} className={lineCls[l.k]}>{l.t}</div>)}
+              {lines.map((l, i) => <div key={i} className={`${lineCls[l.k]} whitespace-pre-wrap break-words`}>{l.t}</div>)}
             </div>
             <form className="flex border-t-4 border-[#22C55E]" onSubmit={(e) => { e.preventDefault(); run(cmd) }}>
               <span className="pl-4 py-3 font-mono font-bold text-[15px] text-[#22C55E]">$</span>
-              <input value={cmd} onChange={(e) => setCmd(e.target.value)} aria-label="Terminal command" placeholder="type a command..." className="grow min-w-0 bg-transparent border-0 text-white font-mono text-[15px] px-2.5 py-3 outline-none" />
+              <input value={cmd} onChange={(e) => setCmd(e.target.value)} aria-label="Terminal command" placeholder="type a command or ask me anything..." className="grow min-w-0 bg-transparent border-0 text-white font-mono text-[15px] px-2.5 py-3 outline-none" />
               <button type="submit" className={`bg-[#22C55E] border-l-4 border-black px-5 text-sm ${mono}`}>RUN</button>
             </form>
           </div>
