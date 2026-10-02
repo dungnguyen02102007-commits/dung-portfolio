@@ -34,8 +34,8 @@ const cats = {
 }
 const s = (cat, names) => names.map((name) => ({ cat, name }))
 const skills = [
-  ...s('AI', ['LangChain', 'Multi-Agent Systems', 'RAG', 'ChromaDB', 'FAISS', 'Sentence-Transformers', 'Prompt Engineering', 'Claude & Gemini APIs', 'Pydantic']),
-  ...s('PROG', ['Python', 'JavaScript (ES6+)', 'Java', 'C++', 'Kotlin', 'SQL']),
+  ...s('AI', ['LangChain', 'Multi-Agent Systems', 'RAG', 'Prompt Engineering', 'Claude & Gemini APIs']),
+  ...s('PROG', ['Python', 'JavaScript (ES6+)', 'Java', 'SQL']),
   ...s('WEB', ['React 19', 'Vite', 'Tailwind CSS v4', 'Framer Motion', 'Node.js', 'Express', 'REST APIs']),
   ...s('DB', ['MySQL', 'PostgreSQL/Supabase', 'SQLite', 'Git', 'GitHub', 'Vercel']),
 ]
@@ -50,7 +50,7 @@ const contacts = [
 const commands = {
   help: ['Commands: help, about, skills, contact, download-cv, clear', 'Or just ask me anything about Dung (EN / VI).'],
   about: ['Nguyen Quang Dung // IT student, UTS x HCMUT (2025-2028).', 'Focus: multi-agent systems, RAG, responsive web.'],
-  skills: ['AI: LangChain, Multi-Agent, RAG, Claude & Gemini APIs', 'CODE: Python, JS, Java, C++, SQL', 'WEB: React 19, Vite, Tailwind v4, Node, Express', 'DATA: MySQL, PostgreSQL, SQLite, Git'],
+  skills: ['AI: LangChain, Multi-Agent, RAG, Claude & Gemini APIs', 'CODE: Python, JS, Java, SQL', 'WEB: React 19, Vite, Tailwind v4, Node, Express', 'DATA: MySQL, PostgreSQL, SQLite, Git'],
   contact: ['email: nhoxben1234@gmail.com', 'phone: +84 707 005 345', 'github: github.com/dungnguyen02102007-commits'],
   'download-cv': ['Downloading QuangDung_CV.pdf ...'],
 }
@@ -150,7 +150,7 @@ function Ragdoll({ children }) {
 }
 
 // Class photo that drifts around the loading screen; grab it, throw it, let it fly on.
-function FlyingPhoto({ src, label, alt, w = 360, x = 80, y = 140, vx = 190, vy = 130 }) {
+function FlyingPhoto({ src, label, alt, w = 360, x = 80, y = 140, vx = 190, vy = 130, delay = 0 }) {
   const ref = useRef(null)
   const s = useRef({ x, y, vx, vy, rot: 0, drag: false, ox: 0, oy: 0, hist: [] })
 
@@ -230,16 +230,33 @@ function FlyingPhoto({ src, label, alt, w = 360, x = 80, y = 140, vx = 190, vy =
       onPointerUp={up}
       onPointerCancel={up}
       style={{ touchAction: 'none', width: `min(${w}px, 60vw)` }}
-      className="absolute left-0 top-0 z-20 cursor-grab active:cursor-grabbing select-none bg-white border-4 border-black shadow-[8px_8px_0_#000] p-2 will-change-transform"
+      className="absolute left-0 top-0 z-20 cursor-grab active:cursor-grabbing select-none will-change-transform"
     >
-      <img src={src} draggable={false} alt={alt} className="block w-full h-auto border-2 border-black" />
-      <div className="mt-1.5 flex justify-between font-mono font-bold text-[11px]"><span>{label}</span><span>GRAB &amp; THROW</span></div>
+      <motion.div
+        initial={{ scale: 0, rotate: -25, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        exit={{ scale: 0, rotate: 20, opacity: 0, transition: { duration: 0.2 } }}
+        transition={{ type: 'spring', stiffness: 260, damping: 15, delay }}
+        className="bg-white border-4 border-black shadow-[8px_8px_0_#000] p-2"
+      >
+        <img src={src} draggable={false} alt={alt} className="block w-full h-auto border-2 border-black" />
+        <div className="mt-1.5 flex justify-between font-mono font-bold text-[11px]"><span>{label}</span><span>GRAB &amp; THROW</span></div>
+      </motion.div>
     </div>
   )
 }
 
+const PHOTOS = [
+  { src: '/class.jpg', label: 'HCMUT x UTS', alt: 'HCMUT x UTS class photo', w: 340, vx: -260, vy: 150 },
+  { src: '/hackathon.webp', label: 'ADC HACKATHON 2026', alt: 'Team photo at the ADC Hackathon', w: 290, vx: -180, vy: 260 },
+  { src: '/class-green.webp', label: 'CLASS PHOTO', alt: 'Class photo in green uniforms', w: 270, vx: -300, vy: 60 },
+  { src: '/team-selfie.jpg', label: 'TEAM SELFIE', alt: 'Team selfie with a city view', w: 250, vx: -140, vy: 230 },
+  { src: '/oisp.webp', label: 'OISP CONTEST', alt: 'Team photo at the OISP Community Day and Presentation Contest', w: 300, vx: -330, vy: 190 },
+]
+
 function Intro({ onDone }) {
   const [pct, setPct] = useState(0)
+  const [open, setOpen] = useState(false)
   useEffect(() => {
     const t = setInterval(() => setPct((p) => Math.min(100, p + Math.ceil(Math.random() * 6))), 140)
     return () => clearInterval(t)
@@ -256,11 +273,25 @@ function Intro({ onDone }) {
       <div aria-hidden className="pointer-events-none absolute right-40 bottom-24 w-32 h-32 rotate-12 bg-[#FF5E97] border-4 border-black shadow-[8px_8px_0_#000]" />
       <div aria-hidden className="pointer-events-none absolute -left-10 bottom-1/3 w-44 h-44 rounded-full bg-[#A855F7] border-4 border-black" />
       <div aria-hidden className="pointer-events-none absolute left-1/3 top-10 w-24 h-24 -rotate-6 bg-[#22C55E] border-4 border-black" />
-      <FlyingPhoto src="/class.jpg" label="HCMUT x UTS" alt="HCMUT x UTS class photo" w={360} x={80} y={140} vx={190} vy={130} />
-      <FlyingPhoto src="/hackathon.webp" label="ADC HACKATHON 2026" alt="Team photo at the ADC Hackathon" w={300} x={700} y={60} vx={-160} vy={210} />
-      <FlyingPhoto src="/class-green.webp" label="CLASS PHOTO" alt="Class photo in green uniforms" w={280} x={300} y={420} vx={220} vy={-150} />
-      <FlyingPhoto src="/team-selfie.jpg" label="TEAM SELFIE" alt="Team selfie with a city view" w={260} x={1000} y={300} vx={-200} vy={-170} />
-      <FlyingPhoto src="/oisp.webp" label="OISP CONTEST" alt="Team photo at the OISP Community Day and Presentation Contest" w={310} x={520} y={540} vx={150} vy={-190} />
+      <AnimatePresence>
+        {open &&
+          PHOTOS.map((ph, i) => (
+            <FlyingPhoto key={ph.src} {...ph} x={Math.max(0, window.innerWidth - 240)} y={110} delay={i * 0.12} />
+          ))}
+      </AnimatePresence>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-label={open ? 'Close photo folder' : 'Open photo folder'}
+        className="absolute z-30 right-4 top-24 md:right-[72px] md:top-28 flex flex-col items-start transition-transform hover:-translate-y-1 active:translate-y-0"
+      >
+        <span className="ml-1 h-3.5 w-14 bg-[#FF5E97] border-4 border-b-0 border-black rounded-t-md" />
+        <span className="relative flex items-end justify-between gap-3 bg-[#FF5E97] border-4 border-black shadow-[6px_6px_0_#000] px-3 py-2 w-40 h-[88px]">
+          <span className="font-display text-sm leading-tight text-left">{open ? 'CLOSE' : 'MEMORIES'}</span>
+          <span className="bg-white border-[3px] border-black px-1.5 font-mono font-bold text-sm">{PHOTOS.length}</span>
+          <span className="absolute -top-2.5 right-3 w-24 h-3 bg-white border-2 border-black rotate-2" aria-hidden />
+        </span>
+      </button>
       <div className="relative flex justify-between text-sm font-bold">
         <span className="bg-[#FDF8F5] border-4 border-black shadow-[5px_5px_0_#000] px-3 py-1.5">
           <img src="/logos.png" alt="HCMUT and UTS logos" className="block h-12 md:h-16 w-auto" />

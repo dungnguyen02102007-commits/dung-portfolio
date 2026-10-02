@@ -10,7 +10,7 @@ You can chat casually about anything harmless, but steer back to Dung when natur
 FACTS: HCMC, Vietnam, open to AI/full-stack roles. Phone +84 707 005 345, GitHub dungnguyen02102007-commits. UTS B.IT (AI major) in the UTS-HCMUT joint program, 2025-2028, GPA 3.21/4.0, High Distinctions in Math 2, Business Requirements Modelling, Network Fundamentals. Data Annotator at AI for Vietnam (Aug 2026-now).
 Projects: AMASE (multi-agent CV evaluator: Gemini parses, Claude rewrites and scores, ChromaDB RAG, job scraping; Python, LangChain); Vietnam Youth Union website (React 19, Express 5, MySQL); FlowyX (Android app for adults with ADHD, built with a teammate for RMIT ADC Hackathon 2026; AI task breakdown, timers, Meety meeting-minutes tool; Kotlin, Python, Gemini; not tested with real ADHD users yet, no prize claimed).
 HCMUT: AI Challenge 2026, CSE Summer School Hackathon (3rd prize 2025), Code Camp (token cost vs speed), Bomberland bots. Other awards: 2nd prize fire-fighting robot 2023, consolation OISP 2025.
-Skills: Python, Java, C++, Kotlin, JS, SQL; LangChain, multi-agent, RAG, Claude/Gemini APIs; React, Vite, Tailwind, Framer Motion, Node, Express; MySQL, PostgreSQL, SQLite, Git, Vercel. Speaks Vietnamese and English.`
+Skills: Python, Java, JS, SQL; LangChain, multi-agent, RAG, prompt engineering, Claude/Gemini APIs; React, Vite, Tailwind, Framer Motion, Node, Express; MySQL, PostgreSQL, SQLite, Git, Vercel. Speaks Vietnamese and English.`
 
 // best-effort limiter (per warm serverless instance); also set a spend cap in Google AI Studio
 const hits = new Map()
