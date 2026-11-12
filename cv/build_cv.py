@@ -97,7 +97,8 @@ section('SKILLS &amp; LANGUAGES')
 s += bullets([
     '<b>Programming Languages:</b> Python, Java, JavaScript (ES6+), SQL',
     '<b>AI &amp; Machine Learning:</b> LangChain, multi-agent systems, RAG, prompt engineering, Claude/Gemini APIs',
-    '<b>Web Development:</b> React 19, Vite, Tailwind CSS v4, React Router, Framer Motion, Node.js, Express, REST API design, HTML/CSS',
+    '<b>Frontend:</b> HTML/CSS, React 19, Vite, Tailwind CSS v4, React Router, Framer Motion',
+    '<b>Backend:</b> Node.js, Express, REST API design',
     '<b>Databases &amp; Tooling:</b> MySQL, PostgreSQL/Supabase, SQLite/SQLAlchemy, Git and GitHub, Vercel, Microsoft Office',
     '<b>Languages:</b> Vietnamese (native), English (IELTS 6.5)'])
 doc.build(s)
